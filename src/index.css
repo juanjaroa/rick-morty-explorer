@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: 'Greycliff CF';
+  src: url('/fonts/Greycliff_CF_Regular.otf') format('otf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greycliff CF';
+  src: url('/fonts/Greycliff_CF_Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greycliff CF';
+  src: url('/fonts/Greycliff_CF_SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Greycliff CF';
+  src: url('/fonts/Greycliff_CF_Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-greycliff: "Greycliff CF", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-primary-100: #EEE3FF;
+  --color-primary-600: #8054C7;
+  --color-primary-700: #5A3696;
+  --color-secondary-600: #63D838;
+}
+
+.bottom-line:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.filter-button-selected{
+  background-color: var(--color-primary-100);
+  outline: none;
+  color: var(--color-primary-700);
+}
