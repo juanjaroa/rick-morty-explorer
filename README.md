@@ -1,16 +1,48 @@
-# React + Vite
+# Rick and Morty Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Running
 
-Currently, two official plugins are available:
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+3. Build for production:
+   ```bash
+   npm run build
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## API Usage
 
-## React Compiler
+The app consumes the public Rick and Morty GraphQL API using Apollo Client.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Implemented GraphQL Queries
 
-## Expanding the ESLint configuration
+#### 1. Character List (`GET_CHARACTERS`)
+Used to populate the sidebar and drive search.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*   **Variables**:
+    *   `page`: (Int) Controls pagination. Starts at 1.
+    *   `filter`: (FilterCharacter) Object that contains:
+        *   `name`: (String) Search term entered by the user.
+        *   `species`: (String) Species filter (e.g., "Human", "Alien") when different from "All".
+*   **Response Handling**:
+    *   **Infinite Scroll**: Uses `info.next` to detect additional pages. When the scroll reaches the bottom, `fetchMore` is called to request the next page and merge results.
+    *   **Exclusion Filter**: Results from the API (`data.characters.results`) are filtered on the client to exclude characters already in the local "Favorites" list (`starredCharacters`), preventing duplicates in the UI.
+    *   **Sorting**: Although the API returns results sorted by ID, the app applies client-side alphabetical sorting (ascending/descending) on the received data.
+    *   **Metadata**: Uses `info.count` to show the total number of results that match the API filters.
+
+#### 2. Character Detail (`GET_CHARACTER`)
+Used to render the detail panel (`DetailPanel`).
+
+*   **Variables**:
+    *   `id`: (ID) Unique character identifier pulled from the URL or list selection.
+*   **Requested Data**:
+    *   Scalar fields: `name`, `species`, `status`, `gender`, `type`, `image`.
+    *   Nested objects:
+        *   `origin`: Uses the `name` field.
+        *   `location`: Uses the `name` field.
+*   **Behavior**: The query is skipped (`skip: !characterId`) when there is no selected ID.
